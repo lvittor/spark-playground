@@ -1,0 +1,117 @@
+version: "3.7"
+
+x-spark-worker-config:
+  &spark-worker-config 
+  image: bitnami/spark:3.1.2
+  user: root
+  networks:
+      - default_net
+  environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+  volumes:
+      - ../spark/app:/usr/local/spark/app
+      - ../spark/resources:/usr/local/spark/resources 
+  
+services:
+
+	postgres:
+        image: postgres:latest
+        networks:
+            - default_net
+        volumes: 
+            - ./docker/postgres:/docker-entrypoint-initdb.d
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+        ports:
+            - "5432:5432"
+	spark:
+        image: bitnami/spark:3.1.2
+        user: root
+        hostname: spark
+        networks:
+            - default_net
+        environment:
+            - SPARK_MODE=master
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        volumes:
+            - ../spark/app:/usr/local/spark/app # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+            - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+        ports:
+            - "8181:8080"
+            - "7077:7077"
+
+    spark-worker-1:
+        <<: *spark-worker-config 
+
+    spark-worker-2:
+		<<: *spark-worker-config 
+
+    spark-worker-3:
+		<<: *spark-worker-config
+
+    spark-worker-4:
+        <<: *spark-worker-config 
+
+    spark-worker-5:
+		<<: *spark-worker-config 
+
+    spark-worker-6:
+		<<: *spark-worker-config
+
+    spark-worker-7:
+        <<: *spark-worker-config 
+
+    spark-worker-8:
+		<<: *spark-worker-config 
+
+    spark-worker-9:
+		<<: *spark-worker-config
+
+    spark-worker-10:
+        <<: *spark-worker-config 
+
+    spark-worker-11:
+		<<: *spark-worker-config 
+
+    spark-worker-12:
+		<<: *spark-worker-config
+
+    spark-worker-13:
+        <<: *spark-worker-config 
+
+    spark-worker-14:
+		<<: *spark-worker-config 
+
+    spark-worker-15:
+		<<: *spark-worker-config
+
+    spark-worker-16:
+        <<: *spark-worker-config 
+
+    spark-worker-17:
+		<<: *spark-worker-config 
+
+    spark-worker-18:
+		<<: *spark-worker-config
+    
+    spark-worker-19:
+		<<: *spark-worker-config 
+
+    spark-worker-20:
+		<<: *spark-worker-config
+
+
+networks:
+    default_net:
