@@ -61,57 +61,6 @@ services:
     spark-worker-3:
 		<<: *spark-worker-config
 
-    spark-worker-4:
-        <<: *spark-worker-config 
-
-    spark-worker-5:
-		<<: *spark-worker-config 
-
-    spark-worker-6:
-		<<: *spark-worker-config
-
-    spark-worker-7:
-        <<: *spark-worker-config 
-
-    spark-worker-8:
-		<<: *spark-worker-config 
-
-    spark-worker-9:
-		<<: *spark-worker-config
-
-    spark-worker-10:
-        <<: *spark-worker-config 
-
-    spark-worker-11:
-		<<: *spark-worker-config 
-
-    spark-worker-12:
-		<<: *spark-worker-config
-
-    spark-worker-13:
-        <<: *spark-worker-config 
-
-    spark-worker-14:
-		<<: *spark-worker-config 
-
-    spark-worker-15:
-		<<: *spark-worker-config
-
-    spark-worker-16:
-        <<: *spark-worker-config 
-
-    spark-worker-17:
-		<<: *spark-worker-config 
-
-    spark-worker-18:
-		<<: *spark-worker-config
-    
-    spark-worker-19:
-		<<: *spark-worker-config 
-
-    spark-worker-20:
-		<<: *spark-worker-config
-
 
 networks:
     default_net:
