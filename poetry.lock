@@ -1,4 +1,52 @@
 [[package]]
+name = "certifi"
+version = "2022.9.24"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "charset-normalizer"
+version = "2.1.1"
+description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.extras]
+unicode_backport = ["unicodedata2"]
+
+[[package]]
+name = "future"
+version = "0.18.2"
+description = "Clean single-source support for Python 3 and 2"
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "idna"
+version = "3.4"
+description = "Internationalized Domain Names in Applications (IDNA)"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "oauthlib"
+version = "3.2.2"
+description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+rsa = ["cryptography (>=3.0.0)"]
+signals = ["blinker (>=1.4.0)"]
+signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
+
+[[package]]
 name = "py4j"
 version = "0.10.9"
 description = "Enables Python programs to dynamically access arbitrary Java objects"
@@ -22,11 +70,79 @@ ml = ["numpy (>=1.7)"]
 mllib = ["numpy (>=1.7)"]
 sql = ["pandas (>=0.23.2)", "pyarrow (>=1.0.0)"]
 
+[[package]]
+name = "python-twitter"
+version = "3.5"
+description = "A Python wrapper around the Twitter API"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+future = "*"
+requests = "*"
+requests-oauthlib = "*"
+
+[[package]]
+name = "requests"
+version = "2.28.1"
+description = "Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = ">=3.7, <4"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+charset-normalizer = ">=2,<3"
+idna = ">=2.5,<4"
+urllib3 = ">=1.21.1,<1.27"
+
+[package.extras]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
+use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "requests-oauthlib"
+version = "1.3.1"
+description = "OAuthlib authentication support for Requests."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.dependencies]
+oauthlib = ">=3.0.0"
+requests = ">=2.0.0"
+
+[package.extras]
+rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
+
+[[package]]
+name = "urllib3"
+version = "1.26.12"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+
+[package.extras]
+brotli = ["brotlicffi (>=0.8.0)", "brotli (>=1.0.9)", "brotlipy (>=0.6.0)"]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "urllib3-secure-extra", "ipaddress"]
+socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5b74c38631ee123dcfd10ef63d78e8e4c54c715c328a62736715a31e624b67e6"
+content-hash = "92bb77002cfa420755424c9b5c4f278cb4b7afb2cba5bd42b59698354b754eb9"
 
 [metadata.files]
+certifi = []
+charset-normalizer = []
+future = []
+idna = []
+oauthlib = []
 py4j = []
 pyspark = []
+python-twitter = []
+requests = []
+requests-oauthlib = []
+urllib3 = []
