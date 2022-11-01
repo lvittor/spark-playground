@@ -33,6 +33,32 @@ services:
             - POSTGRES_DB=airflow
         ports:
             - "5432:5432"
+
+    
+  # airflow LocalExecutor
+  airflow-webserver:
+      image: docker-airflow-spark:latest
+      restart: always
+      networks:
+          - default_net
+      depends_on:
+          - postgres
+      environment:
+          - LOAD_EX=n
+          - EXECUTOR=Local
+      volumes:
+          - ../dags:/usr/local/airflow/dags # DAG folder
+          - ../spark/app:/usr/local/spark/app # Spark Scripts (Must be the same path in airflow and Spark Cluster)
+          - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+      ports:
+          - "8282:8282"
+      command: webserver
+      healthcheck:
+          test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+          interval: 30s
+          timeout: 30s
+          retries: 3
+    
 	spark:
         image: bitnami/spark:3.1.2
         user: root
