@@ -21,71 +21,69 @@ x-spark-worker-config:
   
 services:
 
-	postgres:
-        image: postgres:latest
-        networks:
-            - default_net
-        volumes: 
-            - ./docker/postgres:/docker-entrypoint-initdb.d
-        environment:
-            - POSTGRES_USER=airflow
-            - POSTGRES_PASSWORD=airflow
-            - POSTGRES_DB=airflow
-        ports:
-            - "5432:5432"
-
+  postgres:
+    image: postgres:latest
+    networks:
+      - default_net
+    volumes: 
+      - ./docker/postgres:/docker-entrypoint-initdb.d
+    environment:
+        - POSTGRES_USER=airflow
+        - POSTGRES_PASSWORD=airflow
+        - POSTGRES_DB=airflow
+    ports:
+        - "5432:5432"
     
-  # airflow LocalExecutor
   airflow-webserver:
-      image: docker-airflow-spark:latest
-      restart: always
-      networks:
-          - default_net
-      depends_on:
-          - postgres
-      environment:
-          - LOAD_EX=n
-          - EXECUTOR=Local
-      volumes:
-          - ../dags:/usr/local/airflow/dags # DAG folder
-          - ../spark/app:/usr/local/spark/app # Spark Scripts (Must be the same path in airflow and Spark Cluster)
-          - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
-      ports:
-          - "8282:8282"
-      command: webserver
-      healthcheck:
-          test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-          interval: 30s
-          timeout: 30s
-          retries: 3
+    image: docker-airflow-spark:latest
+    restart: always
+    networks:
+        - default_net
+    depends_on:
+        - postgres
+    environment:
+        - LOAD_EX=n
+        - EXECUTOR=Local
+    volumes:
+        - ../dags:/usr/local/airflow/dags # DAG folder
+        - ../spark/app:/usr/local/spark/app # Spark Scripts (Must be the same path in airflow and Spark Cluster)
+        - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+    ports:
+        - "8282:8282"
+    command: webserver
+    healthcheck:
+        test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+        interval: 30s
+        timeout: 30s
+        retries: 3
     
-	spark:
-        image: bitnami/spark:3.1.2
-        user: root
-        hostname: spark
-        networks:
-            - default_net
-        environment:
-            - SPARK_MODE=master
-            - SPARK_RPC_AUTHENTICATION_ENABLED=no
-            - SPARK_RPC_ENCRYPTION_ENABLED=no
-            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-            - SPARK_SSL_ENABLED=no
-        volumes:
-            - ../spark/app:/usr/local/spark/app # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
-            - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
-        ports:
-            - "8181:8080"
-            - "7077:7077"
+  spark:
+    image: bitnami/spark:3.1.2
+    user: root
+    hostname: spark
+    networks:
+        - default_net
+    environment:
+        - SPARK_MODE=master
+        - SPARK_RPC_AUTHENTICATION_ENABLED=no
+        - SPARK_RPC_ENCRYPTION_ENABLED=no
+        - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+        - SPARK_SSL_ENABLED=no
+    volumes:
+        - ../spark/app:/usr/local/spark/app # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+        - ../spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+    ports:
+        - "8181:8080"
+        - "7077:7077"
 
-    spark-worker-1:
-        <<: *spark-worker-config 
+  spark-worker-1:
+    <<: *spark-worker-config 
 
-    spark-worker-2:
-		<<: *spark-worker-config 
+  spark-worker-2:
+    <<: *spark-worker-config 
 
-    spark-worker-3:
-		<<: *spark-worker-config
+  spark-worker-3:
+    <<: *spark-worker-config
 
 
 networks:
