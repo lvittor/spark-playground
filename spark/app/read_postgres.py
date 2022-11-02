@@ -3,29 +3,23 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
 # Create spark session
-spark = (SparkSession
-    .builder
-    .getOrCreate()
-)
+spark = SparkSession.builder.getOrCreate()
 
-####################################
-# Parameters
-####################################
 postgres_db = sys.argv[1]
 postgres_user = sys.argv[2]
 postgres_pwd = sys.argv[3]
 
-####################################
-# Read Postgres
-####################################
-print("######################################")
-print("READING POSTGRES TABLES")
-print("######################################")
-
-df = spark.read.format("jdbc").option("url", postgres_db).option("dbtable", "public.playlist").option("user", postgres_user).option("password", postgres_pwd).load()
+df = ( 
+    spark.read
+    .format("jdbc")
+    .option("url", postgres_db)
+    .option("dbtable", "public.netflix")
+    .option("user", postgres_user)
+    .option("password", postgres_pwd)
+    .load()
+)
 
 df.printSchema()
-df.select("name").show(20)
 
 # print("######################################")
 # print("EXECUTING QUERY AND SAVING RESULTS")

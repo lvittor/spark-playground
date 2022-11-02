@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 ###############################################
 spark_master = "spark://spark:7077"
 spark_app_name = "Spark Hello World"
-postgres_driver_jar = "/usr/local/spark/resources/jars/postgresql-9.4.1207.jar"
+postgres_driver_jar = "/usr/local/spark/resources/jars/postgresql-42.4.0.jar"
 
 data = "/usr/local/spark/resources/data/netflix.csv"
 postgres_db = "jdbc:postgresql://postgres/test"

@@ -1,6 +1,7 @@
 import sys
-import os
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, to_date
+from pyspark.sql.types import DateType
 
 spark = SparkSession.builder.getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
@@ -13,12 +14,21 @@ postgres_pwd = sys.argv[4]
 
 # Read file
 df = spark.read.format("csv").option("header", True).load(data)
+
+df.printSchema()
+
+# df = (
+#     df
+#     .withColumn('date_added', to_date(col('date_added')))
+#     .withColumn('release_year', to_date(col('release_year')))
+# )
+
 df.show(truncate=False)
 
 (
     df.write
     .format("jdbc")
-    .option("url", postgres_db")
+    .option("url", postgres_db)
     .option("dbtable", "public.netflix")
     .option("user", postgres_user)
     .option("password", postgres_pwd)
