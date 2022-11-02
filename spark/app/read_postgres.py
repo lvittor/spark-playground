@@ -20,10 +20,3 @@ df = (
 )
 
 df.printSchema()
-
-# print("######################################")
-# print("EXECUTING QUERY AND SAVING RESULTS")
-# print("######################################")
-# # Save result to a CSV file
-# df_result.coalesce(1).write.format("csv").mode("overwrite").save("/usr/local/spark/resources/data/output_postgres", header=True)
-

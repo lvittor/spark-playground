@@ -3,11 +3,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from datetime import datetime, timedelta
 
-###############################################
-# Parameters
-###############################################
 spark_master = "spark://spark:7077"
-spark_app_name = "Spark Hello World"
+spark_app_name = "Spark Test"
 postgres_driver_jar = "/usr/local/spark/resources/jars/postgresql-42.4.0.jar"
 
 data = "/usr/local/spark/resources/data/netflix.csv"
@@ -15,9 +12,6 @@ postgres_db = "jdbc:postgresql://postgres/test"
 postgres_user = "test"
 postgres_pwd = "postgres"
 
-###############################################
-# DAG Definition
-###############################################
 now = datetime.now()
 
 default_args = {
@@ -42,7 +36,7 @@ start = DummyOperator(task_id="start", dag=dag)
 
 spark_job = SparkSubmitOperator(
     task_id="spark_job",
-    application="/usr/local/spark/app/netflix.py", # Spark application path created in airflow and spark cluster
+    application="/usr/local/spark/app/netflix.py",
     name=spark_app_name,
     conn_id="spark_default",
     verbose=1,
@@ -52,6 +46,18 @@ spark_job = SparkSubmitOperator(
     driver_class_path=postgres_driver_jar,
     dag=dag)
 
+spark_read = SparkSubmitOperator(
+    task_id="spark_read",
+    application="/usr/local/spark/app/read_postgres.py",
+    name=spark_app_name,
+    conn_id="spark_default",
+    verbose=1,
+    conf={"spark.master":spark_master},
+    application_args=[postgres_db, postgres_user, postgres_pwd],
+    jars=postgres_driver_jar,
+    driver_class_path=postgres_driver_jar,
+    dag=dag)
+
 end = DummyOperator(task_id="end", dag=dag)
 
-start >> spark_job >> end
+start >> spark_job >> spark_read >> end
