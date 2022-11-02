@@ -1,16 +1,16 @@
 # Spark Playgorund
-
+A very simple demonstration of how to use SparkSQL to transform data from a CSV to a PostgreSQL table.
 
 ## Build the image
 
 ```shell
-make build AIRFLOW_VERSION=1.10.14 SPARK_VERSION= HADDOP_VERSION=
+docker build --rm --force-rm -t docker-airflow-spark:latest .
 ```
 
 ## Start containers
 
 ```shell
-make up
+docker-compose up
 ```
 
 ### Go to the services web UI
@@ -27,6 +27,6 @@ http://localhost:8181
 
 #### Postgres 
 
-Testing database:
+Testing database: test
 
-Airflow database: 
+Airflow database: airflow

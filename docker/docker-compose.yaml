@@ -26,7 +26,7 @@ services:
     networks:
       - default_net
     volumes: 
-      - ./docker/postgres:/docker-entrypoint-initdb.d
+      - ./docker-airflow/postgres:/docker-entrypoint-initdb.d
     environment:
         - POSTGRES_USER=airflow
         - POSTGRES_PASSWORD=airflow
