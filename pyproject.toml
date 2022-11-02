@@ -8,6 +8,7 @@ authors = ["lvittor <lvittor@itba.edu.ar>"]
 python = "^3.10"
 pyspark = "3.1.2"
 python-twitter = "^3.5"
+apache-airflow = "^2.4.2"
 
 [tool.poetry.dev-dependencies]
 

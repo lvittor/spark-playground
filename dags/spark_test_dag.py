@@ -22,15 +22,15 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": timedelta(minutes=1)
+    "retry_delay": timedelta(minutes=1),
 }
 
 dag = DAG(
-        dag_id="spark-test", 
-        description="This DAG runs a simple Pyspark app.",
-        default_args=default_args, 
-        schedule_interval=timedelta(1)
-    )
+    dag_id="spark-test",
+    description="This DAG runs a simple Pyspark app.",
+    default_args=default_args,
+    schedule_interval=timedelta(1),
+)
 
 start = DummyOperator(task_id="start", dag=dag)
 
@@ -40,11 +40,12 @@ spark_job = SparkSubmitOperator(
     name=spark_app_name,
     conn_id="spark_default",
     verbose=1,
-    conf={"spark.master":spark_master},
+    conf={"spark.master": spark_master},
     application_args=[data, postgres_db, postgres_user, postgres_pwd],
     jars=postgres_driver_jar,
     driver_class_path=postgres_driver_jar,
-    dag=dag)
+    dag=dag,
+)
 
 spark_read = SparkSubmitOperator(
     task_id="spark_read",
@@ -52,11 +53,12 @@ spark_read = SparkSubmitOperator(
     name=spark_app_name,
     conn_id="spark_default",
     verbose=1,
-    conf={"spark.master":spark_master},
+    conf={"spark.master": spark_master},
     application_args=[postgres_db, postgres_user, postgres_pwd],
     jars=postgres_driver_jar,
     driver_class_path=postgres_driver_jar,
-    dag=dag)
+    dag=dag,
+)
 
 end = DummyOperator(task_id="end", dag=dag)
 
