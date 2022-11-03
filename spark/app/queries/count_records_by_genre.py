@@ -18,13 +18,8 @@ df = (
     .load()
 )
 
-# count movies by year, display in count descending order
-df.groupBy("release_year").count().orderBy(F.desc("count")).show()
+# count records by genre
+queried_df = df.groupBy("listed_in").count().orderBy("count", ascending=False)
 
-
-# df.createTempView("netflix_view")
-# queried_df = spark.sql(
-#     "SELECT release_year, COUNT(*) AS released_movies FROM netflix_view WHERE type = 'Movie' GROUP BY release_year ORDER BY released_movies DESC"
-# )
-
-# queried_df.show()
+queried_df.printSchema()
+queried_df.show()
