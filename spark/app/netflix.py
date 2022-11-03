@@ -1,6 +1,8 @@
 import sys
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, to_date
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
 
 spark = SparkSession.builder.getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
@@ -11,8 +13,23 @@ postgres_db = sys.argv[2]
 postgres_user = sys.argv[3]
 postgres_pwd = sys.argv[4]
 
+customSchema = StructType([
+    StructField("show_id", IntegerType(), True),
+    StructField("type", StringType(), True),
+    StructField("title", StringType(), True),
+    StructField("director", StringType(), True),
+    StructField("cast", StringType(), True),
+    StructField("country", StringType(), True),
+    StructField("date_added", StringType(), True),
+    StructField("release_year", IntegerType(), True),
+    StructField("rating", StringType(), True),
+    StructField("duration", StringType(), True),
+    StructField("listed_in", StringType(), True),
+    StructField("description", StringType(), True)
+])
+
 # Read file
-df = spark.read.format("csv").option("header", True).load(data)
+df = spark.read.format("csv").option("header", True).schema(customSchema).load(data)
 
 df.printSchema()
 
