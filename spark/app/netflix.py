@@ -13,23 +13,31 @@ postgres_db = sys.argv[2]
 postgres_user = sys.argv[3]
 postgres_pwd = sys.argv[4]
 
-customSchema = StructType([
-    StructField("show_id", IntegerType(), True),
-    StructField("type", StringType(), True),
-    StructField("title", StringType(), True),
-    StructField("director", StringType(), True),
-    StructField("cast", StringType(), True),
-    StructField("country", StringType(), True),
-    StructField("date_added", StringType(), True),
-    StructField("release_year", IntegerType(), True),
-    StructField("rating", StringType(), True),
-    StructField("duration", StringType(), True),
-    StructField("listed_in", StringType(), True),
-    StructField("description", StringType(), True)
-])
+customSchema = StructType(
+    [
+        StructField("show_id", StringType(), True),
+        StructField("type", StringType(), True),
+        StructField("title", StringType(), True),
+        StructField("director", StringType(), True),
+        StructField("cast", StringType(), True),
+        StructField("country", StringType(), True),
+        StructField("date_added", StringType(), True),
+        StructField("release_year", IntegerType(), True),
+        StructField("rating", StringType(), True),
+        StructField("duration", StringType(), True),
+        StructField("listed_in", StringType(), True),
+        StructField("description", StringType(), True),
+    ]
+)
 
 # Read file
-df = spark.read.format("csv").option("header", True).schema(customSchema).load(data)
+df = (
+    spark.read.format("csv")
+    .option("header", True)
+    .option("delimeter", ",")
+    .schema(customSchema)
+    .load(data)
+)
 
 df.printSchema()
 
@@ -42,8 +50,7 @@ df.printSchema()
 df.show(truncate=False)
 
 (
-    df.write
-    .format("jdbc")
+    df.write.format("jdbc")
     .option("url", postgres_db)
     .option("dbtable", "public.netflix")
     .option("user", postgres_user)
